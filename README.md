@@ -33,6 +33,12 @@ Looking at Tailwind, Bootstrap, Bulma, etc, I can see a lot of options available
     > https://flask.palletsprojects.com/en/2.1.x/quickstart/#apis-with-json
 - [ ] Learn how to query the status from jQuery
 
+
+|Status|Step|Reference|
+|---|---|---|
+| <ul><li>- [x]</li></ul> | Install Flask | `pip install flask` |
+| <ul><li>- [ ]</li></ul> | Setup flask to return a empty web page | [Flask Quickstart - rendering-templates](https://flask.palletsprojects.com/en/2.1.x/quickstart/#rendering-templates) |
+
 ## Lessons learnt
 - Forcing myself to write down the 'plan of attack' seems helpful up front, my development process could be described as 'interrupted', and I feel better about the idea that future me can pick things up.
 - Adding the links seemed useful initially, I've just been doing a bit of initial research, and didn't want that to go to waste when I closed my web browser. But I think my implementation may have been... naive. It really interrupts the flow of the to do list, making it hard to tell at a glance what's happening.
