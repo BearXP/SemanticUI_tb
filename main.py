@@ -9,12 +9,16 @@ app = Flask(__name__)
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
-    return render_template('Upload_WhereUsed.html', name=name)
+    return render_template('HelloWorld.html', name=name)
 
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
     return 'Hello World'
+
+@app.route('/WhereUsedGraph/')
+def whereUsedGraph():
+    return render_template('UploadWhereUsed.html')
   
 # main driver function
 if __name__ == '__main__':
