@@ -57,3 +57,7 @@ Note, I've pushed as much of the flask stuff as possible until the end. This is 
 - Always search for a [cheat sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 - I feel like I'm learning bits and pieces of html while I'm here, with the `</br>` and all...
 
+### Semantic
+ - Just **steal the sample code from their demo page**. On their demo page they're like 'It's just this one line and look at the results!', but then you find out they have animations, etc, added which isn't in the demo code. `Right click > inspect` for the win!
+ - That also applies to formatting for the paragraphs.
+
