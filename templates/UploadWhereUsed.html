@@ -5,11 +5,55 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form method="post" hidden>
     <label for="username">Username</label>
     <input name="username" id="username" required>
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
     <input type="submit" value="Register">
   </form>
+  <!-- Start Processing -->
+  <button class="ui secondary button">
+    <i class="play user"></i>
+    Start Processing
+  </button>
+  <!-- ProcessingStatus -->
+  <div id="Progress" hidden>
+    <div class="ui ordered steps">
+      <div id="Step0" class="active step">
+        <i class="book icon"></i>
+        <div class="content">
+          <div class="title">Reading XLSX file</div>
+          <div class="description">Uploading and reading..</div>
+          <div id="Step0Bar" class="ui active success progress">
+            <div class="bar" style="transition-duration: 300ms; width: 46%;">
+              <div id="Step0Progress" class="progress">30%</div>
+            </div>
+            <div class="label">Uploading Files</div>
+          </div>
+        </div>
+      </div>
+      <div id="Step1" class="step">
+        <i class="paper plane icon"></i>
+        <div class="content">
+          <div class="title">Checking Where-Used</div>
+          <div class="description">Using bdl.vsl.com.au</div>
+        </div>
+      </div>
+      <div id="Step2" class="step">
+        <i class="child icon"></i>
+        <div class="content">
+          <div class="title">SAP BOM Lookup</div>
+          <div class="description">For each .000 file</div>
+        </div>
+      </div>
+      <div id="Step3" class="step">
+        <i class="play circle icon"></i>
+        <div class="content">
+          <div class="title">Generating Graphs</div>
+          <div class="description">Collating the data</div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

@@ -12,7 +12,7 @@
 <!-- Header Menu -->
 <div class="ui fixed inverted menu">
     <div class="ui container">
-      <a href="#" class="header item">
+      <a href="/" class="header item">
         <img class="logo" src="assets/images/logo.png">
         Marks Toolbox
       </a>
@@ -39,12 +39,18 @@
   </div>
 
 <section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
+  <div class="ui container">
+    <div class="introduction">
+      <h1 class="ui header">
+        {% block header %}{% endblock %}
+      </h1>
+    </div>
+  </div>
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
-  {% block content %}{% endblock %}
+  <div class="main ui container">
+    {% block content %}{% endblock %}
+  </div>
 </section>
 </body>
