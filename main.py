@@ -1,6 +1,6 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -17,8 +17,16 @@ def hello_world():
     return 'Hello World'
 
 @app.route('/WhereUsedGraph/')
+@app.route('/whereusedgraph/')
 def whereUsedGraph():
     return render_template('UploadWhereUsed.html')
+
+@app.route('/StartProcessing', methods=['POST'])
+def startProcessing():
+    print('Processing...')
+    retVal = request.form.get('filename')
+    print( retVal )
+    return 'Hello from Python'
   
 # main driver function
 if __name__ == '__main__':

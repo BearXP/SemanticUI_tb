@@ -13,9 +13,8 @@
     <input type="submit" value="Register">
   </form>
   <!-- Start Processing -->
-  <button class="ui secondary button">
-    <i class="play user"></i>
-    Start Processing
+  <button id="StartProcessing" class="ui secondary button">
+    <i class="play icon"></i>Start Processing
   </button>
   <!-- ProcessingStatus -->
   <div id="Progress" hidden>
@@ -56,4 +55,22 @@
       </div>
     </div>
   </div>
+
+  <script>
+    i = 0;
+    $(document).ready(function(){
+      $("p").keypress(function(){
+        $("span").text(i += 1);
+      });
+      $("#StartProcessing").click(function(){
+        // $("p").keypress();
+        console.log("Keypresses Button Pressed!");
+        var txt = 'Hello from jQuery' // $("FileABCD").val();
+        $.post("/StartProcessing", {filename: txt}, function(result){
+          $("span").html(result);
+        });
+      });
+    });
+  </script>
+  <p>Keypresses: <span>0</span></p>
 {% endblock %}

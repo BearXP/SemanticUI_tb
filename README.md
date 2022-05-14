@@ -13,8 +13,8 @@ Unfortunately the processing takes a bit of time (a few minutes), and it's unfor
 |:--:|:--:|---|---|
 | ✅ | 1 | The webpage must be via by Flask to match the rest of the project | See main.py |
 | ✅ | 2 | The web page must have inhereted headers. I want to reuse the header banner on other pages. | See `base.html`, `UploadWhereUsed.html`, and `main.py` |
-| - | 3 | The css library must support 'steps' showing which step is being processed | See CSS library below |
-| - | 4 | The css library must support 'progress bars' | See CSS Library below|
+| ✅ | 3 | The css library must support 'steps' showing which step is being processed | See CSS library below |
+| ✅ | 4 | The css library must support 'progress bars' | See CSS library below|
 | - | 5 | The test bed must show updates to the status of the progress | |
 | - | 6 | The 'Start work' button must disappear when processing begins | |
 | - | 7 | The 'Progress' must only appear when processing is happening, i.e. not on startup | |
@@ -28,8 +28,8 @@ Unfortunately the processing takes a bit of time (a few minutes), and it's unfor
 Step 0 has been to look at different CSS libraries for this project.  
 Looking at Tailwind, Bootstrap, Bulma, etc, I can see a lot of options available for me, but semantic-ui seems to have everything I want out of the box.
 
-Unfortunately semantic-ui is apparently [abandoned](https://github.com/fomantic/Fomantic-UI-Docs/), the last update was 4 years agom, on 22/Oct/2018.  
-It looks like there's a fork called [fomantic-ui](https://fomantic-ui.com/) which seems to still be active. The last release was almost a year ago, but I can see commits as recently as 18 hours ago, which is promising
+Unfortunately semantic-ui is apparently [abandoned](https://github.com/fomantic/Fomantic-UI-Docs/), the last update was 4 years ago, on 22/Oct/2018.  
+It looks like there's a fork called [fomantic-ui](https://fomantic-ui.com/) which seems to still be active. The last release was almost a year ago, but I can see commits as recently as 18 hours ago, which is promising.
 
 ### Steps 1 onwards:
 
