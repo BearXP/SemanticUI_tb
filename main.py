@@ -2,6 +2,8 @@
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template, request
 
+fileBeingProcessed = {}
+
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
 app = Flask(__name__)
@@ -25,7 +27,7 @@ def whereUsedGraph():
 def startProcessing():
     print('Processing...')
     retVal = request.form.get('filename')
-    print( retVal )
+    print( f" -> Filename: {retVal}" )
     return 'Hello from Python'
   
 # main driver function

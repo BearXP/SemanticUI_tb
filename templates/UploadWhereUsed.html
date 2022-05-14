@@ -13,9 +13,12 @@
     <input type="submit" value="Register">
   </form>
   <!-- Start Processing -->
-  <button id="StartProcessing" class="ui secondary button">
-    <i class="play icon"></i>Start Processing
-  </button>
+  <form>
+    <input id="filenameInput"></input>
+    <button id="StartProcessing" class="ui secondary button">
+      <i class="play icon"></i>Start Processing
+    </button>
+  </form>
   <!-- ProcessingStatus -->
   <div id="Progress" hidden>
     <div class="ui ordered steps">
@@ -57,6 +60,9 @@
   </div>
 
   <script>
+    var dt = new Date();
+    var defaultFilename = 'MDCR_' + dt.getHours() + '_' + dt.getMinutes() + '.xlsx'
+    $('#filenameInput').val(defaultFilename)
     i = 0;
     $(document).ready(function(){
       $("p").keypress(function(){
@@ -64,9 +70,11 @@
       });
       $("#StartProcessing").click(function(){
         // $("p").keypress();
-        console.log("Keypresses Button Pressed!");
+        var filenameInput = $('#filenameInput').val()
+        console.log("Keypresses Button Pressed!!");
+        console.log(filenameInput)
         var txt = 'Hello from jQuery' // $("FileABCD").val();
-        $.post("/StartProcessing", {filename: txt}, function(result){
+        $.post("/StartProcessing", {'filename': filenameInput}, function(result){
           $("span").html(result);
         });
       });
