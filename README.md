@@ -1,5 +1,6 @@
 # Semantic UI Testbed
-> https://semantic-ui.com/introduction/advanced-usage.html  
+> ~~https://semantic-ui.com/introduction/advanced-usage.html~~  
+> https://fomantic-ui.com/introduction/advanced-usage.html  
 > https://github.com/BearXP/SemanticUI_tb
 -----------
 
@@ -26,6 +27,10 @@ Unfortunately the processing takes a bit of time (a few minutes), and it's unfor
 ### CSS Library
 Step 0 has been to look at different CSS libraries for this project.  
 Looking at Tailwind, Bootstrap, Bulma, etc, I can see a lot of options available for me, but semantic-ui seems to have everything I want out of the box.
+
+Unfortunately semantic-ui is apparently [abandoned](https://github.com/fomantic/Fomantic-UI-Docs/), the last update was 4 years agom, on 22/Oct/2018.  
+It looks like there's a fork called [fomantic-ui](https://fomantic-ui.com/) which seems to still be active. The last release was almost a year ago, but I can see commits as recently as 18 hours ago, which is promising
+
 ### Steps 1 onwards:
 
 Note, I've pushed as much of the flask stuff as possible until the end. This is intentional. **LEARN jQUERY MARK**!
@@ -34,8 +39,8 @@ Note, I've pushed as much of the flask stuff as possible until the end. This is 
 |:---:|---|---|
 | ✅ | Install Flask | `pip install flask` |
 | ✅ | Setup flask to return a empty web page </br> > *See `/`,  `/hello`, and `/hello/bear`* | [Flask - First Application](https://www.geeksforgeeks.org/flask-creating-first-simple-application/) </br> [Flask Quickstart - rendering-templates](https://flask.palletsprojects.com/en/2.1.x/quickstart/#rendering-templates) |
-| ✅ | Setup a template with the Semantic CDN , headers, ~~and footers~~ | [CDN Link](https://semantic-ui.com/introduction/advanced-usage.html#cdn-releases) </br> [Flask - Templates](https://flask.palletsprojects.com/en/2.1.x/tutorial/templates/) |
-| ✅ |  Setup a dummy page with a 'start work' button, and hidden progress bars | [HTML Cheat Sheet - Hidden Elements](https://htmlcheatsheet.com/) </br> [Semantic - Steps](https://semantic-ui.com/elements/step.html) </br> [Semantic - Progress Bar](https://semantic-ui.com/modules/progress.html) |
+| ✅ | Setup a template with the Semantic CDN , headers, ~~and footers~~ | [CDN Link](https://fomantic-ui.com/introduction/advanced-usage.html#cdn-releases) </br> [Flask - Templates](https://flask.palletsprojects.com/en/2.1.x/tutorial/templates/) |
+| ✅ |  Setup a dummy page with a 'start work' button, and hidden progress bars | [HTML Cheat Sheet - Hidden Elements](https://htmlcheatsheet.com/) </br> [Semantic - Steps](https://fomantic-ui.com/elements/step.html) </br> [Semantic - Progress Bar](https://fomantic-ui.com/modules/progress.html) |
 | - | Learn how to send the 'start work' command to flask </br>  - I may need to set up a cookie so the site / server know which file it asked for? | [Flask - Cookies](https://flask.palletsprojects.com/en/2.1.x/quickstart/#cookies) </br> [Repeated Queries](https://stackoverflow.com/questions/5140939/repeat-jquery-ajax-call#5140963)|
 | - | Learn how to animate the introduction of the progress bars </br> `$("#demo").fadeIn();  // fade in a hidden ID` | [jQuery Cheat Sheet](https://htmlcheatsheet.com/jquery/) |
 | - | Learn what Blueprints are? | [Instructables - Blueprints](https://www.instructables.com/Setting-Up-a-Flask-Application/) </br> [Flask - Blueprints](https://flask.palletsprojects.com/en/2.1.x/tutorial/views/) |
@@ -57,7 +62,10 @@ Note, I've pushed as much of the flask stuff as possible until the end. This is 
 - Always search for a [cheat sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 - I feel like I'm learning bits and pieces of html while I'm here, with the `</br>` and all...
 
-### Semantic
+### ~~Semantic~~ Fomantic
  - Just **steal the sample code from their demo page**. On their demo page they're like 'It's just this one line and look at the results!', but then you find out they have animations, etc, added which isn't in the demo code. `Right click > inspect` for the win!
  - That also applies to formatting for the paragraphs.
+ - Fomantic has more features than Semantic did, and it was just lucky that I was looking through Reddit and saw that Semantic was abandoned.
+   - Maybe I should check these sorts of things before I start? Usually I don't bother with forks. And frankly most of the changes I had to make to update it was in this README.md, the code itself had less changes..
+   - Or care less about that sort of thing. [nes.css](https://github.com/nostalgic-css/NES.css/) hasn't been updated in 10 months, but I think I could still have fun. 
 
