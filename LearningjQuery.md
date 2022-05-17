@@ -1,4 +1,5 @@
 > https://ihatetomatoes.net/jquery-complete-beginners-datatypes-selectors/
+> https://www.educba.com/jquery-if-statement/
 
 ## Setup
 You can choose several sources for the jQuery library, I just didn't want to use google, so I chose the first one.
@@ -34,6 +35,7 @@ $(document).ready(function() {
     $('h1') // Selects the h1 element
     $('#intro') // Selects the element with id="intro"
     $('#gallery li') // Selects every list item within the id="gallery"
+    $('#gallery .galleryItem') // Selects all elements with class galleryItems, inside the element with the id gallery
     $('.galleryItem') // Also selects every list item within the gallery
 
     //selects the first list item within the gallery

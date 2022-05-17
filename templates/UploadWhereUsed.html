@@ -27,19 +27,25 @@
         <div class="content">
           <div class="title">Reading XLSX file</div>
           <div class="description">Uploading and reading..</div>
-          <div id="Step0Bar" class="ui active success progress">
-            <div class="bar" style="transition-duration: 300ms; width: 46%;">
-              <div id="Step0Progress" class="progress">30%</div>
+          <div id="Step0Bar" class="ui progress" data-percent="0">
+            <div class="bar" style="transition-duration: 300ms; width: 0%;">
+              <div id="Step0Progress" class="progress">0%</div>
             </div>
             <div class="label">Uploading Files</div>
           </div>
         </div>
       </div>
       <div id="Step1" class="step">
-        <i class="paper plane icon"></i>
+        <i class="question circle icon"></i>
         <div class="content">
           <div class="title">Checking Where-Used</div>
           <div class="description">Using bdl.vsl.com.au</div>
+          <div id="Step1Bar" class="ui progress" data-percent="0">
+            <div class="bar" style="transition-duration: 250ms; width: 0%;">
+              <div id="Step1Progress" class="progress"></div>
+            </div>
+            <div class="label"></div>
+          </div>
         </div>
       </div>
       <div id="Step2" class="step">
@@ -47,38 +53,128 @@
         <div class="content">
           <div class="title">SAP BOM Lookup</div>
           <div class="description">For each .000 file</div>
+          <div id="Step2Bar" class="ui progress" data-percent="0">
+            <div class="bar" style="transition-duration: 200ms; width: 0%;">
+              <div id="Step2Progress" class="progress"></div>
+            </div>
+            <div class="label"></div>
+          </div>
         </div>
       </div>
       <div id="Step3" class="step">
-        <i class="play circle icon"></i>
+        <i class="american sign language interpreting icon"></i>
         <div class="content">
           <div class="title">Generating Graphs</div>
           <div class="description">Collating the data</div>
+          <div id="Step3Bar" class="ui progress" data-percent="0">
+            <div class="bar" style="transition-duration: 200ms; width: 0%;">
+              <div id="Step3Progress" class="progress"></div>
+            </div>
+          <div class="label"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Create a div where the graph will take place -->
+  <!-- https://d3-graph-gallery.com/graph/dendrogram_radial_basic.html -->
+  <div id="graph"></div>
 
   <script>
     var dt = new Date();
     var defaultFilename = 'MDCR_' + dt.getHours() + '_' + dt.getMinutes() + '.xlsx'
     $('#filenameInput').val(defaultFilename)
     i = 0;
+
+    var setBarStatus = function(stepNo, stepProgress, active) {
+      stepNoString = '#Step'+stepNo;
+      console.log('Setting ' + stepNoString + 'to ' + stepProgress)
+      $(stepNoString+'Bar').attr('data-percent', stepProgress);
+      $(stepNoString+' .bar').css('width', stepProgress+'%');
+      $(stepNoString+"Progress").html(stepProgress+"%");
+      if( stepProgress == 100 ){
+        $(stepNoString + 'Bar').addClass('success');
+      }
+      if( active ) {
+        $(stepNoString).addClass('active')
+      } else {
+        $(stepNoString).removeClass('active');
+      }
+    }
+
+    var fetchStatus = function(filename) {
+      var stepNo = 3
+      var stepProgress = 100
+      $.post("/GetProcess/" + filename
+      ).done(function(msg) {
+        stepNo = msg['step'];
+        stepProgress = msg['stepProgress'];
+        var status = msg['status'];
+        if(stepNo > 0) {
+          setBarStatus(stepNo-1, 100, false);
+        }
+        setBarStatus(stepNo, stepProgress, true);
+        console.log('msg');
+      }).fail(function() {
+        console.log('error');
+      }).always(function(msg) {
+        // Schedule the next request after this one completes,
+        // even after error
+        console.log(' Running Always > Step'+stepNo+' > '+stepProgress+'%');
+        if( (stepNo != 3) || (stepProgress != 100)) {
+          setTimeout(fetchStatus(filename), 1000);
+        }
+      });
+    }
+
     $(document).ready(function(){
       $("p").keypress(function(){
         $("span").text(i += 1);
       });
       $("#StartProcessing").click(function(){
         // $("p").keypress();
-        var filenameInput = $('#filenameInput').val()
+        event.preventDefault();
+        var filenameInput = $('#filenameInput').val();
         console.log("Keypresses Button Pressed!!");
         console.log(filenameInput)
         var txt = 'Hello from jQuery' // $("FileABCD").val();
         $.post("/StartProcessing", {'filename': filenameInput}, function(result){
           $("span").html(result);
         });
+        $('form').fadeOut(200, function() {
+          $('#Progress').delay(200).fadeIn(300);
+        });
+        fetchStatus(filenameInput);
       });
     });
   </script>
+  <script src="//d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+  <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+  <div id="graph" style="text-align: center;"></div>
+  <script>
+  
+  d3.select("#graph").graphviz()
+      .renderDot('\
+      digraph {\
+        graph [label="XECO11587_QF0406_D01_Master_Data_Change_Request_V02 - Overview" layout=circo]\
+        node [border=3 fontname=Arial shape=record style=filled]\
+        091.4124 [label="091.4124.110\nB04 &gt; B05\nMR X Motor Cable" fillcolor="#A0F0ED" fontcolor=Black]\
+        091.4204 [label="091.4204.110\nC01 &gt; C02\nSlide IO Opto Cable" fillcolor="#A0F0ED" fontcolor=Black]\
+        091.4095 [label="091.4095.110\nD01 &gt; D02\nSpeaker Cable" fillcolor="#A0F0ED" fontcolor=Black]\
+        091.5571 [label="091.5571.130\nF02 &gt; F03\nRobot Head PWA\nDrawing not found in Artifactory" fillcolor="#A0F0ED" fontcolor=Black]\
+        "S091.4204" [label="S091.4204.000\nA01\nSlide Drawer Opto" fillcolor=White fontcolor=Black]\
+        091.0343 [label="091.0343.000\nS01\n*Robot Head Assembly" fillcolor=White fontcolor=Black]\
+        "S091.5571" [label="S091.5571.000\nA01\nRobot Head PWA" fillcolor=White fontcolor=Black]\
+        091.4204 -> "S091.4204" [fontname=Arial label=""]\
+        091.5571 -> 091.0343 [fontname=Arial label=""]\
+        091.5571 -> "S091.5571" [fontname=Arial label=""]\
+}\
+      ');
+  
+  </script>
+  <!--
   <p>Keypresses: <span>0</span></p>
+  -->
 {% endblock %}

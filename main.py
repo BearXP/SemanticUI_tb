@@ -1,8 +1,10 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template, request
+from time import sleep
+import random
 
-fileBeingProcessed = {}
+filesBeingProcessed = {}
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -26,12 +28,29 @@ def whereUsedGraph():
 @app.route('/StartProcessing', methods=['POST'])
 def startProcessing():
     print('Processing...')
-    retVal = request.form.get('filename')
-    print( f" -> Filename: {retVal}" )
+    filename = request.form.get('filename')
+    filesBeingProcessed[filename] = {'error' : '', 'status' : 0, 'step' : 0, 'stepProgress' : 0}
+    for i in range(4):
+        print(f"Processing {filename} - status moving to {i}")
+        filesBeingProcessed[filename]['step'] = i
+        timetoSleep = random.randrange(2,10)
+        for progress in range(timetoSleep*100):
+            sleep(timetoSleep/10000)
+            stepProgress = progress / timetoSleep
+            filesBeingProcessed[filename]['stepProgress'] = int(stepProgress) # percent
+    filesBeingProcessed[filename]['stepProgress'] = 100
+    print( f" -> Filename: {filename}" )
     return 'Hello from Python'
+
+@app.route('/GetProcess/<filename>', methods=['POST'])
+def getProcess(filename):
+    sleep(0.2)
+    if filename in filesBeingProcessed:
+        return filesBeingProcessed[filename]
+    return {'error' : 'File not in queue', 'status' : -1}
   
 # main driver function
 if __name__ == '__main__':
     # run() method of Flask class runs the application 
     # on the local development server.
-    app.run(port=5000, debug=True)
+    app.run(port=5001, debug=True)

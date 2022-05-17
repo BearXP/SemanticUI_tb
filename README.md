@@ -15,11 +15,12 @@ Unfortunately the processing takes a bit of time (a few minutes), and it's unfor
 | ✅ | 2 | The web page must have inhereted headers. I want to reuse the header banner on other pages. | See `base.html`, `UploadWhereUsed.html`, and `main.py` |
 | ✅ | 3 | The css library must support 'steps' showing which step is being processed | See CSS library below |
 | ✅ | 4 | The css library must support 'progress bars' | See CSS library below|
-| - | 5 | The test bed must show updates to the status of the progress | |
-| - | 6 | The 'Start work' button must disappear when processing begins | |
-| - | 7 | The 'Progress' must only appear when processing is happening, i.e. not on startup | |
-| - | 8 | I would like to learn jQuery, so all client code is to be in jQuery | |
-| - | 9 | The website is to be pretty, both on desktop and mobile. I don't expect mobile users, but I do want to have a website that actually looks nice for a change | |
+| ✅ | 5 | The test bed must show updates to the status of the progress | See the `setBarStatus` function|
+| ✅ | 6 | The 'Start work' button must disappear when processing begins | ` $('form').fadeOut(200)`|
+| ✅ | 7 | The 'Progress' must only appear when processing is happening, i.e. not on startup | `$('#Progress').delay(200).fadeIn(300);`|
+| ✅ | 8 | I would like to learn jQuery, so all client code is to be in jQuery | Done, see `UploadWhereUsed.html` |
+| ✅ | 9 | The website is to be pretty, both on desktop and mobile. I don't expect mobile users, but I do want to have a website that actually looks nice for a change | Done. Mainly because of the copy / paste of the fomantic website. |
+| - | 10 | Display the graph using | |
 
 
 
@@ -42,12 +43,13 @@ Note, I've pushed as much of the flask stuff as possible until the end. This is 
 | ✅ | Setup a template with the Semantic CDN , headers, ~~and footers~~ | [CDN Link](https://fomantic-ui.com/introduction/advanced-usage.html#cdn-releases) </br> [Flask - Templates](https://flask.palletsprojects.com/en/2.1.x/tutorial/templates/) |
 | ✅ |  Setup a dummy page with a 'start work' button, and hidden progress bars | [HTML Cheat Sheet - Hidden Elements](https://htmlcheatsheet.com/) </br> [Semantic - Steps](https://fomantic-ui.com/elements/step.html) </br> [Semantic - Progress Bar](https://fomantic-ui.com/modules/progress.html) |
 | ✅ | Learn how to send the 'start work' command to flask </br>  - I may need to set up a cookie so the site / server know which file it asked for? | |
-| - | Learn how to query the status of the process using jQuery </br>  - I may need to set up a cookie so the site / server know which file it asked for? | [Flask - Cookies](https://flask.palletsprojects.com/en/2.1.x/quickstart/#cookies) </br> [Repeated Queries](https://stackoverflow.com/questions/5140939/repeat-jquery-ajax-call#5140963)|
-| - | Learn how to animate the introduction of the progress bars </br> `$("#demo").fadeIn();  // fade in a hidden ID` | [jQuery Cheat Sheet](https://htmlcheatsheet.com/jquery/) |
+| ✅ | Learn how to query the status of the process using jQuery </br>  - I may need to set up a cookie so the site / server know which file it asked for? | [Flask - Cookies](https://flask.palletsprojects.com/en/2.1.x/quickstart/#cookies) </br> [Repeated Queries](https://stackoverflow.com/questions/5140939/repeat-jquery-ajax-call#5140963)|
+| ✅ | Learn how to animate the introduction of the progress bars </br> `$("#demo").fadeIn();  // fade in a hidden ID` | [jQuery Cheat Sheet](https://htmlcheatsheet.com/jquery/) |
 | - | Learn what Blueprints are? | [Instructables - Blueprints](https://www.instructables.com/Setting-Up-a-Flask-Application/) </br> [Flask - Blueprints](https://flask.palletsprojects.com/en/2.1.x/tutorial/views/) |
-| - | Set up dummy processing in flask |   |
-| - | Set up status responses in flask | [Flask API](https://flask.palletsprojects.com/en/2.1.x/quickstart/#apis-with-json) |
-| - | Learn how to query the status from jQuery | |
+| ✅ | Set up dummy processing in flask |   |
+| ✅ | Set up status responses in flask | [Flask API](https://flask.palletsprojects.com/en/2.1.x/quickstart/#apis-with-json) |
+| ✅ | Learn how to query the status from jQuery | |
+| - | Show the graph in the web page | [d3-graph](https://d3-graph-gallery.com/graph/dendrogram_radial_basic.html) </br> [.dot to D3JS](https://github.com/gmamaladze/d3-dot-graph) </br> [D3 Graphing DOT Github](https://github.com/magjac/d3-graphviz) / [Example](https://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b) / [Ex2](https://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca) |
 
 ## Lessons learnt
 ### Process
