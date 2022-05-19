@@ -76,20 +76,38 @@
       </div>
     </div>
   </div>
+  <!-- Show the results -->
+  <div id="Tabs" hidden>
+    <!-- Setup the tabs at the top -->
+    <div class="ui five item stackable tabs menu">
+    </div>
+    <!-- Overview Tab
+    <div class="ui tab" data-tab="Tab2" style>
+    </div>
+     -->
+  </div>
 
-  <!-- Create a div where the graph will take place -->
-  <!-- https://d3-graph-gallery.com/graph/dendrogram_radial_basic.html -->
-  <div id="graph"></div>
 
   <script>
+    /*=====================================================================================
+      Demo Code: While debugging I need to change the filename each time I refresh the page,
+                 so I can 'process' new files, otherwise it just keeps coming back as
+                 'everything is complete'
+    =====================================================================================*/
     var dt = new Date();
-    var defaultFilename = 'MDCR_' + dt.getHours() + '_' + dt.getMinutes() + '.xlsx'
+    var defaultFilename = 'MDCR_' + dt.getHours() + '_' + dt.getMinutes() + '_' + dt.getSeconds() + '.xlsx'
     $('#filenameInput').val(defaultFilename)
-    i = 0;
-
+    /*=====================================================================================
+      ** Set Status Bar:
+           This code will update the progress bars
+           Needs elements with IDs:
+            - Step{n}, e.g. Step0                  | 
+            - Step{n}Bar, e.g. Step0Bar            | 
+            - Class bar                            | 
+            - Step{n}Progress, e.g. Step0Progress  | 
+    =====================================================================================*/
     var setBarStatus = function(stepNo, stepProgress, active) {
       stepNoString = '#Step'+stepNo;
-      console.log('Setting ' + stepNoString + 'to ' + stepProgress)
       $(stepNoString+'Bar').attr('data-percent', stepProgress);
       $(stepNoString+' .bar').css('width', stepProgress+'%');
       $(stepNoString+"Progress").html(stepProgress+"%");
@@ -102,7 +120,9 @@
         $(stepNoString).removeClass('active');
       }
     }
-
+    /*=====================================================================================
+      ** Fetch the Processing Status from the server:
+    =====================================================================================*/
     var fetchStatus = function(filename) {
       var stepNo = 3
       var stepProgress = 100
@@ -115,66 +135,106 @@
           setBarStatus(stepNo-1, 100, false);
         }
         setBarStatus(stepNo, stepProgress, true);
-        console.log('msg');
       }).fail(function() {
-        console.log('error');
+        console.log('error fetching processing status :(');
       }).always(function(msg) {
-        // Schedule the next request after this one completes,
-        // even after error
-        console.log(' Running Always > Step'+stepNo+' > '+stepProgress+'%');
+        // Schedule the next request even after error
         if( (stepNo != 3) || (stepProgress != 100)) {
-          setTimeout(fetchStatus(filename), 1000);
+          setTimeout(function() {fetchStatus(filename)}, 300);
         }
       });
     }
-
+    /*=====================================================================================
+      ** addTab
+    =====================================================================================*/
+    var addTab = function(tabName) {
+      // Update the menu
+      var existingMenu = $('.tabs')[0].innerHTML
+      var newMenu = existingMenu + "\n"
+        + "<a class=\"item\" data-tab=\"" + tabName + "\">\n"
+        + "  " + tabName + "\n"
+        + "</a>"
+        $('.tabs')[0].innerHTML = newMenu
+      // Append the tab
+      var existingTabs = $('#Tabs')[0].innerHTML
+      var newTab = existingTabs + "\n"
+      + "<div class=\"ui tab\" data-tab=\"" + tabName + "\" style>\n"
+      + "  <div id=\"contents\">\n"
+      + "   <p>Hello!" + tabName + "</p>\n"
+      + "    <div id=\"Network" + tabName + "\" style=\"width: 100%; height: 100%\">"
+      + "      <div class=\"vis-network\" style=\"position: relative; overflow: hidden; touch-action: pan-y; user-select: none; width: 100%; height: 100%;\" tabindex=\"0\">\n"
+      + "        <canvas style=\"position: relative; touch-action: none; user-select: none; width: 100%; height: 100%;\" width=\"883\" height=\"487\">\n"
+      + "        </canvas>\n"
+      + "      </div>\n"
+      + "    </div>\n"
+      + "  </div>\n"
+      + "</div>\n"
+      $('#Tabs')[0].innerHTML = newTab
+      $.tab()
+      $('.tabs.menu .item').tab();
+    }
+    /*=====================================================================================
+      ** Create a Graph Function
+    =====================================================================================*/
+    var createGraph = function(container, rawData) {
+      var options = {
+        physics: {
+          enabled: true,
+          stabilization: false,
+          barnesHut: {
+            springLength: 400,
+            avoidOverlap: 0.5,
+          },
+        },
+      };
+      var network = new vis.Network(container, rawData, options);
+      console.log('dot: '+rawData)
+      var dotData = vis.parseDOTNetwork(rawData);
+      network.setData(dotData);
+      container.height = ($("body").height() - 100);
+    };
     $(document).ready(function(){
-      $("p").keypress(function(){
-        $("span").text(i += 1);
-      });
+      /*===================================================================================
+        ** Click 'Start Processing' button
+      ===================================================================================*/
       $("#StartProcessing").click(function(){
-        // $("p").keypress();
         event.preventDefault();
         var filenameInput = $('#filenameInput').val();
-        console.log("Keypresses Button Pressed!!");
-        console.log(filenameInput)
-        var txt = 'Hello from jQuery' // $("FileABCD").val();
         $.post("/StartProcessing", {'filename': filenameInput}, function(result){
-          $("span").html(result);
+          // Received Result!
+          var noTabs = 0;
+          for( var key in result ) {
+            noTabs += 1;
+            addTab(key)
+            var dot = result[key];
+            var container = $('#contents:last div')[0]
+            console.log("Creating graph for " + key)
+            createGraph(container, dot)
+          }
+          console.log($('.menu.tabs .item:first'))
+          $('.menu.tabs .item:first').addClass('active');
+          $('.ui.tab:first').addClass('active');
+          // Transition from 'Reading XLSX file...' > 'Graphs'
+          $('#Progress').fadeOut(200, function() {
+            $('#Tabs').delay(200).fadeIn(300);
+            resize()
+          });
         });
+        // Transition from 'Start Processing' > 'Reading XLSX file...'
         $('form').fadeOut(200, function() {
           $('#Progress').delay(200).fadeIn(300);
         });
+        // Start checking the status of the processing / updating the graphs
         fetchStatus(filenameInput);
       });
+      /*===================================================================================
+        ** Changing Tabs & resizing
+      ===================================================================================*/
+      $(window).resize(resize);
+      function resize() {
+        $("#contents").height($("body").height()- 180);
+      }
     });
   </script>
-  <script src="//d3js.org/d3.v5.min.js"></script>
-  <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
-  <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
-  <div id="graph" style="text-align: center;"></div>
-  <script>
-  
-  d3.select("#graph").graphviz()
-      .renderDot('\
-      digraph {\
-        graph [label="XECO11587_QF0406_D01_Master_Data_Change_Request_V02 - Overview" layout=circo]\
-        node [border=3 fontname=Arial shape=record style=filled]\
-        091.4124 [label="091.4124.110\nB04 &gt; B05\nMR X Motor Cable" fillcolor="#A0F0ED" fontcolor=Black]\
-        091.4204 [label="091.4204.110\nC01 &gt; C02\nSlide IO Opto Cable" fillcolor="#A0F0ED" fontcolor=Black]\
-        091.4095 [label="091.4095.110\nD01 &gt; D02\nSpeaker Cable" fillcolor="#A0F0ED" fontcolor=Black]\
-        091.5571 [label="091.5571.130\nF02 &gt; F03\nRobot Head PWA\nDrawing not found in Artifactory" fillcolor="#A0F0ED" fontcolor=Black]\
-        "S091.4204" [label="S091.4204.000\nA01\nSlide Drawer Opto" fillcolor=White fontcolor=Black]\
-        091.0343 [label="091.0343.000\nS01\n*Robot Head Assembly" fillcolor=White fontcolor=Black]\
-        "S091.5571" [label="S091.5571.000\nA01\nRobot Head PWA" fillcolor=White fontcolor=Black]\
-        091.4204 -> "S091.4204" [fontname=Arial label=""]\
-        091.5571 -> 091.0343 [fontname=Arial label=""]\
-        091.5571 -> "S091.5571" [fontname=Arial label=""]\
-}\
-      ');
-  
-  </script>
-  <!--
-  <p>Keypresses: <span>0</span></p>
-  -->
+  <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
 {% endblock %}

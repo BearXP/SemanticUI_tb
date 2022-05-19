@@ -33,18 +33,17 @@ def startProcessing():
     for i in range(4):
         print(f"Processing {filename} - status moving to {i}")
         filesBeingProcessed[filename]['step'] = i
-        timetoSleep = random.randrange(2,10)
+        timetoSleep = random.randrange(1,3)
         for progress in range(timetoSleep*100):
-            sleep(timetoSleep/10000)
+            # sleep(timetoSleep/1000000)
             stepProgress = progress / timetoSleep
             filesBeingProcessed[filename]['stepProgress'] = int(stepProgress) # percent
     filesBeingProcessed[filename]['stepProgress'] = 100
-    print( f" -> Filename: {filename}" )
-    return 'Hello from Python'
+    import DemoGraph
+    return DemoGraph.graphs
 
 @app.route('/GetProcess/<filename>', methods=['POST'])
 def getProcess(filename):
-    sleep(0.2)
     if filename in filesBeingProcessed:
         return filesBeingProcessed[filename]
     return {'error' : 'File not in queue', 'status' : -1}
